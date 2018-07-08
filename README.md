@@ -64,4 +64,102 @@ An action is usually constructed of:
 * type - what is the action name.
 * data - what data should the action transmit. 
 
-As an example I created a "dummy" action called ActionOne.
+As an example let's create a "dummy" action called ActionOne.
+
+Since we are using TypeScript, we will construct this in a couple of stages.
+
+Create a `action-constants.ts` file with a single constant:
+
+```
+export const ACTION_ONE: string = "ACTION_ONE";
+```
+
+The reason why are creating this file, is to make sure that we are using the right action name and not something undefined due to a typo (which ideally should not happen due to TypeScript support).
+
+Create a `action-types.ts` file with a single action:
+
+```
+import { AnyAction } from "redux";
+
+export type ActionOneType = AnyAction & {
+    text: string;
+}
+```
+In this file we will define how the action objects would look like. Since action object is the returned object when triggering an action, it is important to define it so we can have intellisens once we return it. This might not be super important in a small app, but when the app grows this would be very useful.
+
+Create a `actions.ts` file, with the function which we would trigger from the app:
+
+```
+import { ActionOneType } from "./action-types";
+import { ACTION_ONE } from "./action-constants";
+
+export function onActionOne(text: string): ActionOneType {
+    const action: ActionOneType = {
+        type: ACTION_ONE,
+        text: text
+    }
+   return action;
+}
+```
+
+In this file we created the function which we would call from the code. When we call this action with the new text we want to set to the state, it will return an action object which contains that text. This would later be handled by the reducer (next section).
+
+## Reducer
+
+A reducer is a common place where actions are handled, a reducer would handle the change of global state in response to actions being triggered and return the new state. 
+
+Note - As described in the documentation, the reducer should be `pure` meaning that all it does is that it takes what data the action is carrying, and sets it to the state, without mutating the state. This means that every time we assign a new state, we create a new object and append the new properties carried by the actions to it.
+
+Create a file called `app-state.ts`. In this file we will describe the type of the app state:
+
+```
+export type AppState = {
+    text: string;
+}
+```
+
+As we only want to connect everything, the one thing we need to do is add a text, which is going to be a string.
+
+Create a file called `reducer.ts`
+
+In the begging of the file, we need to define what is the initial state of the application:
+
+```
+const initialState: AppState = {
+    text: "This is initial text"
+}
+```
+
+This initial state, we will use to set when the application is loading.
+
+The next step would be to define the function that will handle the incoming actions and return a new state of the application:
+
+```
+export default function setAppState(state: AppState = initialState, action: AnyAction): AppState {
+    switch(action.type) {
+        case ACTION_ONE: 
+            return Object.assign({}, state, {text: (action as ActionOneType).text})
+        default:
+            return state
+    
+    }
+}
+```
+
+Notice the defaulting of the state to the initial state, which would be returned in the default case.
+
+In this function we will continue adding every new action that is added to the app.
+
+Right now, the only action is `ACTION_ONE`, which would set the new incoming text to the state.
+
+Also notice the `Object.assign`, which is used to create a new state from previous state and the new one.
+
+### Possible hickups
+
+Object.assign is going to show an error:
+`error TS2339: Property 'assign' does not exist on type 'ObjectConstructor'.`
+This error happens because the project is set to ES5 and not ES6.
+
+In order to resolve this change target in `tsconfig.json`:
+`"target": "es6"`
+
