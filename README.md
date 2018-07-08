@@ -48,7 +48,20 @@ If we explore a bit what does it mean to have a "global" state - it means having
 
 Note - I am not using React Router on purpose here.
 
-# Redux - First steps
+# Redux - Installation
 
 `npm install --save redux` - Notice here that we do not need @types/redux as they provide the types as part of the framework, you can however use the @types/redux.
 
+# Redux - Creating Building Blocks
+
+Redux has some unique building blocks, we will create the files and then while adding code, we will populate those files with content.
+
+## Actions
+
+A Redux action is like an event that is happening in the app that updates the global state. An action can be for example: get me the data when a button is clicked. When we trigger an action, it will return an object which describes what needs to be done, or what kind of request was triggered.
+
+An action is usually constructed of:
+* type - what is the action name.
+* data - what data should the action transmit. 
+
+As an example I created a "dummy" action called ActionOne.
