@@ -12,7 +12,9 @@ Many of us know, that usually managing the states in a frontend application can 
 
 Not all applications require Redux, one can work only with React to structure the code. I will show how to structure the same app using Redux and without using it.
 
-I choose the classic TODO app, just because there is place to extend on it and is commonly used.
+I choose for this section to go for the most simple thing we can test that Redux is working, the reason for that is the fact that Redux has many components we need to set before we can start using it. I figured it might be most simple just to connect everything together before building anything on top of that.
+
+I worked with Redux before, but I always find it difficult to remember what exactly to set up and how to connect stuff together. This was a learning experience for me too, and I am sure there is a lot to improve, so just remember, this is suppose to be basic.
 
 # TL;DR
 
@@ -55,7 +57,7 @@ Note - I am not using React Router on purpose here.
 
 `npm install --save redux` - Notice here that we do not need @types/redux as they provide the types as part of the framework, you can however use the @types/redux.
 
-`npm install npm install --save react-redux @types/react-redu` - This will install the needed react tools in order to use Redux, we will return to this a bit later.
+`npm install npm install --save react-redux @types/react-redux` - This will install the needed react tools in order to use Redux, we will return to this a bit later.
 
 # Redux - Creating Building Blocks
 
@@ -186,8 +188,6 @@ import { Provider } from "react-redux";
 
 const store: Store = createStore(setAppState);
 
-console.log("Initial Store: ", store.getState());
-
 ReactDOM.render(
   <Provider store={store}>
     <App />
@@ -200,7 +200,7 @@ In this file we used the `createStore` function from Redux. This is the function
 
 In order to "attach" the store to the application, we will use the `Provider` container which is a component provided by `react-redux`. Using the the `Provider` we only need to provide the store once, and all the other components would be able to access it.
 
-# Connect - Put things to work! (maybe with some explanation before we do...)
+# Connect - Put things to work! (with some explanation before we do...)
 
 Redux patterns recommend differentiating between components which are presentational and container components.
 Let's explain in short:
@@ -208,7 +208,7 @@ Let's explain in short:
 - Presentational - A component that does not dispatch events, but get the needed info including onClick callbacks through props. We can say it is not store aware component - it should be simple: show the props the component gets.
   An example can be: a notification message where it only shows the notification text.
 - Container - A component that contains a presentational component and dispatches events to the store. We can also say that this is the component that would send the callbacks to the presentational components.
-  An example can be: a component that processes notifications and asks a presentational component to display them
+  An example can be: a component that processes notifications and asks a presentational component to display them.
 - Mixed - Some mix between the 2, when one component is not clear to be one or the other.
 
 Let's refactor a bit and create our `SimpleComponent` into the following:
