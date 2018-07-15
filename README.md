@@ -331,6 +331,24 @@ const ContainerComponent = connect(
 export default ContainerComponent;
 ```
 
+Now that we changed the component `App.tsx` is probably complaining, so let's adapt the file as well:
+
+```
+import * as React from "react";
+import PresentationalComponent from "./components/PresentationalComponent";
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <label>This is the App component</label>
+        <PresentationalComponent />
+      </div>
+    );
+  }
+}
+```
+
 All that is left is to RUN! So let`s execute the following:
 
 `npm run build`
