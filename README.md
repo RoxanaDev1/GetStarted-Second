@@ -1,6 +1,6 @@
 # Still Work in progress...
 
-# GetStarted-TypeScript-Express-React
+# GetStarted-TypeScript-Redux
 
 Welcome to my "Get Started" series!
 
